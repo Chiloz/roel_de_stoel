@@ -8,7 +8,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.altbeacon.beacon.Beacon;
@@ -19,6 +22,7 @@ import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.MonitorNotifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
+import org.altbeacon.beacon.service.RunningAverageRssiFilter;
 
 import java.util.Collection;
 import java.util.Random;
@@ -62,7 +66,7 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
     TextView beaconDistance;
     TextView beaconTime;
     String distance = "";
-    int time = 100;
+    int time = 30;
 
     int chooseLeaveEffect;
     int chooseAlarmEffect;
@@ -71,6 +75,7 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
     int chooseTooLateEffect;
 
     boolean chairLeft;
+    boolean soundPlayed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,8 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
 
         beaconManager.getBeaconParsers().add(new BeaconParser()
             .setBeaconLayout("s:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-20v"));
+        beaconManager.setRssiFilterImplClass(RunningAverageRssiFilter.class);
+        RunningAverageRssiFilter.setSampleExpirationMilliseconds(1000L);
 
         beaconManager.bind(this);
 
@@ -128,6 +135,7 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
 
 
         chairLeft = false;
+        soundPlayed = true;
     }
 
     @Override
@@ -186,35 +194,40 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
                 for (Beacon oneBeacon : beacons) {
                     Log.d(TAG, "Distance: " + oneBeacon.getDistance() + "Id: " + oneBeacon.getId1() + "/" + oneBeacon.getId2() + "/" + oneBeacon.getId3());
 
-                    if (oneBeacon.getDistance() > 2) {
+                    if (oneBeacon.getDistance() > 1.6) {
 
-                        if (time == 99) {
+                        if (time == 25) {
                             chooseLeaveEffect = (int) (5 * Math.random()) + 1;
                             switch (chooseLeaveEffect) {
                                 case 1:
                                     wordt_gepakt_1.start();
+                                    chairLeft = true;
                                     break;
                                 case 2:
                                     wordt_gepakt_2.start();
+                                    chairLeft = true;
                                     break;
                                 case 3:
                                     wordt_gepakt_3.start();
+                                    chairLeft = true;
                                     break;
                                 case 4:
                                     wordt_gepakt_4.start();
+                                    chairLeft = true;
                                     break;
                                 case 5:
                                     wordt_gepakt_5.start();
+                                    chairLeft = true;
                                     break;
                             }
                         }
 
                         time--;
-                        chairLeft = true;
                         distance = "Te ver!";
                         beaconTime.setText(""+time);
-                        if (time < 62 && time > 60) {
+                        if (time < 12 && time > 10) {
                             chooseRememberEffect = (int) (5 * Math.random()) + 1;
+                            soundPlayed = true;
                             switch (chooseRememberEffect) {
                                 case 1:
                                     herinnering_1.start();
@@ -234,51 +247,84 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
                             }
                         }
 
-                        if (time <= 0){
+                        while (time < 0 && soundPlayed == true){
                             chooseAlarmEffect = (int) (5 * Math.random()) + 1;
                             chairLeft = true;
                             switch (chooseAlarmEffect) {
                                 case 1:
                                     alarm_1.start();
-                                    try {
-                                        TimeUnit.SECONDS.sleep(4);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
+                                    soundPlayed = false;
+                                    alarm_1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                        @Override
+                                        public void onCompletion(MediaPlayer mp) {
+                                            try {
+                                                TimeUnit.MILLISECONDS.sleep(1000);
+                                                soundPlayed = true;
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
                                     break;
                                 case 2:
                                     alarm_2.start();
-                                    try {
-                                        TimeUnit.SECONDS.sleep(4);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
+                                    soundPlayed = false;
+                                    alarm_2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                        @Override
+                                        public void onCompletion(MediaPlayer mp) {
+                                            try {
+                                                TimeUnit.MILLISECONDS.sleep(1000);
+                                                soundPlayed = true;
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
                                     break;
                                 case 3:
                                     alarm_3.start();
-                                    try {
-                                        TimeUnit.SECONDS.sleep(4);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
+                                    soundPlayed = false;
+                                    alarm_3.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                        @Override
+                                        public void onCompletion(MediaPlayer mp) {
+                                            try {
+                                                TimeUnit.MILLISECONDS.sleep(1000);
+                                                soundPlayed = true;
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
                                     break;
                                 case 4:
                                     alarm_4.start();
-                                    try {
-                                        TimeUnit.SECONDS.sleep(4);
-                                        time = -1;
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
+                                    soundPlayed = false;
+                                    alarm_4.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                        @Override
+                                        public void onCompletion(MediaPlayer mp) {
+                                            try {
+                                                TimeUnit.MILLISECONDS.sleep(1000);
+                                                soundPlayed = true;
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
                                     break;
                                 case 5:
                                     alarm_5.start();
-                                    try {
-                                        TimeUnit.SECONDS.sleep(4);
-                                        time = -1;
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
+                                    soundPlayed = false;
+                                    alarm_5.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                        @Override
+                                        public void onCompletion(MediaPlayer mp) {
+                                            try {
+                                                TimeUnit.MILLISECONDS.sleep(2000);
+                                                soundPlayed = true;
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
                                     break;
                             }
                         }
@@ -338,7 +384,7 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
                             }
                         }
                         distance = Double.toString(oneBeacon.getDistance());
-                        time = 100;
+                        time = 30;
                         beaconTime.setText("Home!");
                     }
 
@@ -355,3 +401,6 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
         }
     }
 }
+
+
+// https://stackoverflow.com/questions/23856163/wait-until-current-media-finish-playing-before-it-play-another-in-android
