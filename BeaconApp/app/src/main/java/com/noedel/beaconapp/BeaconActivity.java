@@ -33,35 +33,15 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
     public static final String TAG = "BeaconsEverywhere";
     public BeaconManager beaconManager;
 
-    MediaPlayer wordt_gepakt_1;
-    MediaPlayer wordt_gepakt_2;
-    MediaPlayer wordt_gepakt_3;
-    MediaPlayer wordt_gepakt_4;
-    MediaPlayer wordt_gepakt_5;
+    MediaPlayer[] wordt_gepakt;
 
-    MediaPlayer herinnering_1;
-    MediaPlayer herinnering_2;
-    MediaPlayer herinnering_3;
-    MediaPlayer herinnering_4;
-    MediaPlayer herinnering_5;
+    MediaPlayer[] herinnering;
 
-    MediaPlayer alarm_1;
-    MediaPlayer alarm_2;
-    MediaPlayer alarm_3;
-    MediaPlayer alarm_4;
-    MediaPlayer alarm_5;
+    MediaPlayer[] alarm;
 
-    MediaPlayer te_laat_1;
-    MediaPlayer te_laat_2;
-    MediaPlayer te_laat_3;
-    MediaPlayer te_laat_4;
-    MediaPlayer te_laat_5;
+    MediaPlayer[] te_laat;
 
-    MediaPlayer op_tijd_1;
-    MediaPlayer op_tijd_2;
-    MediaPlayer op_tijd_3;
-    MediaPlayer op_tijd_4;
-    MediaPlayer op_tijd_5;
+    MediaPlayer[] op_tijd;
 
     TextView beaconDistance;
     TextView beaconTime;
@@ -101,38 +81,35 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
         beaconDistance = findViewById(R.id.textViewDistance);
         beaconTime = findViewById(R.id.textViewTime);
 
-        wordt_gepakt_1 = MediaPlayer.create(this, R.raw.raoul_breng_je_me_weer_terug);
-        wordt_gepakt_2 = MediaPlayer.create(this, R.raw.raoul_breng_me_optijd_terug);
-        wordt_gepakt_3 = MediaPlayer.create(this, R.raw.raoul_ik_wil_niet_te_lang_weg_zijn);
-        wordt_gepakt_4 = MediaPlayer.create(this, R.raw.raoul_oh_waar_gaan_we_heen);
-        wordt_gepakt_5 = MediaPlayer.create(this, R.raw.raoul_voor_eventjes_kan_wel);
+        wordt_gepakt[0] = MediaPlayer.create(this, R.raw.raoul_breng_je_me_weer_terug);
+        wordt_gepakt[1] = MediaPlayer.create(this, R.raw.raoul_breng_me_optijd_terug);
+        wordt_gepakt[2] = MediaPlayer.create(this, R.raw.raoul_ik_wil_niet_te_lang_weg_zijn);
+        wordt_gepakt[3] = MediaPlayer.create(this, R.raw.raoul_oh_waar_gaan_we_heen);
+        wordt_gepakt[4] = MediaPlayer.create(this, R.raw.raoul_voor_eventjes_kan_wel);
 
-        herinnering_1 = MediaPlayer.create(this, R.raw.raoul_ik_hou_het_nog_een_paar_minuten_vol);
-        herinnering_2 = MediaPlayer.create(this, R.raw.raoul_ik_voel_me_niet_zo_goed);
-        herinnering_3 = MediaPlayer.create(this, R.raw.raoul_ik_wil_niet_zeuren);
-        herinnering_4 = MediaPlayer.create(this, R.raw.raoul_nog_een_paar_minuten);
-        herinnering_5 = MediaPlayer.create(this, R.raw.raoul_wordt_het_niet_eens_tijd);
+        herinnering[0] = MediaPlayer.create(this, R.raw.raoul_ik_hou_het_nog_een_paar_minuten_vol);
+        herinnering[1] = MediaPlayer.create(this, R.raw.raoul_ik_voel_me_niet_zo_goed);
+        herinnering[2] = MediaPlayer.create(this, R.raw.raoul_ik_wil_niet_zeuren);
+        herinnering[3] = MediaPlayer.create(this, R.raw.raoul_nog_een_paar_minuten);
+        herinnering[4] = MediaPlayer.create(this, R.raw.raoul_wordt_het_niet_eens_tijd);
 
-        alarm_1 = MediaPlayer.create(this, R.raw.raoul_huilt);
-        alarm_2 = MediaPlayer.create(this, R.raw.raoul_ik_mis_de_tafel);
-        alarm_3 = MediaPlayer.create(this, R.raw.raoul_ik_voel_me_hier_niet_fijn);
-        alarm_4 = MediaPlayer.create(this, R.raw.raoul_ik_wil_terug);
-        alarm_5 = MediaPlayer.create(this, R.raw.raoul_we_zijn_al_veel_te_lang_weg);
+        alarm[0] = MediaPlayer.create(this, R.raw.raoul_huilt);
+        alarm[1] = MediaPlayer.create(this, R.raw.raoul_ik_mis_de_tafel);
+        alarm[2] = MediaPlayer.create(this, R.raw.raoul_ik_voel_me_hier_niet_fijn);
+        alarm[3] = MediaPlayer.create(this, R.raw.raoul_ik_wil_terug);
+        alarm[4] = MediaPlayer.create(this, R.raw.raoul_we_zijn_al_veel_te_lang_weg);
 
-        te_laat_1 = MediaPlayer.create(this, R.raw.raoul_beetje_laat);
-        te_laat_2 = MediaPlayer.create(this, R.raw.raoul_dankjewel_denk_ik);
-        te_laat_3 = MediaPlayer.create(this, R.raw.raoul_let_je_de_volgende_keer_beter_op);
-        te_laat_4 = MediaPlayer.create(this, R.raw.raoul_niet_meer_doen_he);
-        te_laat_5 = MediaPlayer.create(this, R.raw.raoul_volgende_keer_wat_eerder);
+        te_laat[0] = MediaPlayer.create(this, R.raw.raoul_beetje_laat);
+        te_laat[1] = MediaPlayer.create(this, R.raw.raoul_dankjewel_denk_ik);
+        te_laat[2] = MediaPlayer.create(this, R.raw.raoul_let_je_de_volgende_keer_beter_op);
+        te_laat[3] = MediaPlayer.create(this, R.raw.raoul_niet_meer_doen_he);
+        te_laat[4] = MediaPlayer.create(this, R.raw.raoul_volgende_keer_wat_eerder);
 
-        op_tijd_1 = MediaPlayer.create(this, R.raw.raoul_dankjewel_voor_het_terugbrengen);
-        op_tijd_2 = MediaPlayer.create(this, R.raw.raoul_fijn_dat_je_me_netjes_terugbrengt);
-        op_tijd_3 = MediaPlayer.create(this, R.raw.raoul_lief_hoor);
-        op_tijd_4 = MediaPlayer.create(this, R.raw.raoul_netjes_teruggebracht);
-        op_tijd_5 = MediaPlayer.create(this, R.raw.raoul_toch_wel_fijn);
-
-
-
+        op_tijd[0] = MediaPlayer.create(this, R.raw.raoul_dankjewel_voor_het_terugbrengen);
+        op_tijd[1] = MediaPlayer.create(this, R.raw.raoul_fijn_dat_je_me_netjes_terugbrengt);
+        op_tijd[2] = MediaPlayer.create(this, R.raw.raoul_lief_hoor);
+        op_tijd[3] = MediaPlayer.create(this, R.raw.raoul_netjes_teruggebracht);
+        op_tijd[4] = MediaPlayer.create(this, R.raw.raoul_toch_wel_fijn);
 
         chairLeft = false;
         soundPlayed = true;
@@ -197,190 +174,49 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
                     if (oneBeacon.getDistance() > 1.6) {
 
                         if (time == 25) {
-                            chooseLeaveEffect = (int) (5 * Math.random()) + 1;
-                            switch (chooseLeaveEffect) {
-                                case 1:
-                                    wordt_gepakt_1.start();
-                                    chairLeft = true;
-                                    break;
-                                case 2:
-                                    wordt_gepakt_2.start();
-                                    chairLeft = true;
-                                    break;
-                                case 3:
-                                    wordt_gepakt_3.start();
-                                    chairLeft = true;
-                                    break;
-                                case 4:
-                                    wordt_gepakt_4.start();
-                                    chairLeft = true;
-                                    break;
-                                case 5:
-                                    wordt_gepakt_5.start();
-                                    chairLeft = true;
-                                    break;
-                            }
+                            chooseLeaveEffect = (int) (5 * Math.random());
+                            wordt_gepakt[chooseLeaveEffect].start();
+                            chairLeft = true;
                         }
 
                         time--;
                         distance = "Te ver!";
                         beaconTime.setText(""+time);
                         if (time < 12 && time > 10) {
-                            chooseRememberEffect = (int) (5 * Math.random()) + 1;
+                            chooseRememberEffect = (int) (5 * Math.random());
+                            herinnering[chooseRememberEffect].start();
                             soundPlayed = true;
-                            switch (chooseRememberEffect) {
-                                case 1:
-                                    herinnering_1.start();
-                                    break;
-                                case 2:
-                                    herinnering_2.start();
-                                    break;
-                                case 3:
-                                    herinnering_3.start();
-                                    break;
-                                case 4:
-                                    herinnering_4.start();
-                                    break;
-                                case 5:
-                                    herinnering_5.start();
-                                    break;
-                            }
                         }
 
                         while (time < 0 && soundPlayed == true){
-                            chooseAlarmEffect = (int) (5 * Math.random()) + 1;
+                            chooseAlarmEffect = (int) (5 * Math.random());
                             chairLeft = true;
-                            switch (chooseAlarmEffect) {
-                                case 1:
-                                    alarm_1.start();
-                                    soundPlayed = false;
-                                    alarm_1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            try {
-                                                TimeUnit.MILLISECONDS.sleep(1000);
-                                                soundPlayed = true;
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    });
-                                    break;
-                                case 2:
-                                    alarm_2.start();
-                                    soundPlayed = false;
-                                    alarm_2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            try {
-                                                TimeUnit.MILLISECONDS.sleep(1000);
-                                                soundPlayed = true;
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    });
-                                    break;
-                                case 3:
-                                    alarm_3.start();
-                                    soundPlayed = false;
-                                    alarm_3.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            try {
-                                                TimeUnit.MILLISECONDS.sleep(1000);
-                                                soundPlayed = true;
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    });
-                                    break;
-                                case 4:
-                                    alarm_4.start();
-                                    soundPlayed = false;
-                                    alarm_4.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            try {
-                                                TimeUnit.MILLISECONDS.sleep(1000);
-                                                soundPlayed = true;
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    });
-                                    break;
-                                case 5:
-                                    alarm_5.start();
-                                    soundPlayed = false;
-                                    alarm_5.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            try {
-                                                TimeUnit.MILLISECONDS.sleep(2000);
-                                                soundPlayed = true;
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    });
-                                    break;
-                            }
+                            alarm[chooseAlarmEffect].start();
+                            alarm[chooseAlarmEffect].setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+                                    try {
+                                        TimeUnit.MILLISECONDS.sleep(1000);
+                                        soundPlayed = true;
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
                         }
                     }
                     else {
                         if (chairLeft == true) {
-                            alarm_1.pause();
-                            alarm_2.pause();
-                            alarm_3.pause();
-                            alarm_4.pause();
-                            alarm_5.pause();
-                            alarm_1.seekTo(0);
-                            alarm_2.seekTo(0);
-                            alarm_3.seekTo(0);
-                            alarm_4.seekTo(0);
-                            alarm_5.seekTo(0);
+                            alarm[chooseAlarmEffect].pause();
+                            alarm[chooseAlarmEffect].seekTo(0);
                             chairLeft = false;
                             if (time < 0) {
-                                chooseTooLateEffect = (int) (5 * Math.random()) + 1;
-                                switch (chooseTooLateEffect) {
-                                    case 1:
-                                        te_laat_1.start();
-                                        break;
-                                    case 2:
-                                        te_laat_2.start();
-                                        break;
-                                    case 3:
-                                        te_laat_3.start();
-                                        break;
-                                    case 4:
-                                        te_laat_4.start();
-                                        break;
-                                    case 5:
-                                        te_laat_5.start();
-                                        break;
-                                }
+                                chooseTooLateEffect = (int) (5 * Math.random());
+                                te_laat[chooseTooLateEffect].start();
                             }
                             else {
                                 chooseReturnEffect = (int) (5 * Math.random()) + 1;
-                                switch (chooseReturnEffect) {
-                                    case 1:
-                                        op_tijd_1.start();
-                                        break;
-                                    case 2:
-                                        op_tijd_2.start();
-                                        break;
-                                    case 3:
-                                        op_tijd_3.start();
-                                        break;
-                                    case 4:
-                                        op_tijd_4.start();
-                                        break;
-                                    case 5:
-                                        op_tijd_5.start();
-                                        break;
-                                }
+                                op_tijd[chooseReturnEffect].start();
                             }
                         }
                         distance = Double.toString(oneBeacon.getDistance());
@@ -401,6 +237,3 @@ public class BeaconActivity extends AppCompatActivity implements BeaconConsumer{
         }
     }
 }
-
-
-// https://stackoverflow.com/questions/23856163/wait-until-current-media-finish-playing-before-it-play-another-in-android
